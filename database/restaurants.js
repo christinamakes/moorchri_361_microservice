@@ -9,16 +9,14 @@ async function getAllRestaurants(){
   );
   const data = helper.emptyOrRows(rows);
 
-  return {
-    data
-  }
+  return data[0]
 }
 
 async function compare(restaurant){
     const rows = await db.query(
       `SELECT res_name FROM Restaurants WHERE res_name=("${restaurant.name}")`
     );
-    return rows
+    return rows[0]
   }
 
 async function create(restaurant){
@@ -49,9 +47,24 @@ async function create(restaurant){
     return {message};
   }
 
+  async function removeAll(){
+    const result = await db.query(
+      `DELETE FROM Restaurants;`
+    );
+  
+    let message = 'Error';
+  
+    if (result.affectedRows) {
+      message = 'Deleted successfully';
+    }
+  
+    return {message};
+  }
+
 module.exports = {
     getAllRestaurants,
     create,
     remove,
-    compare
+    compare,
+    removeAll
 }

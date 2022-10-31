@@ -38,4 +38,13 @@ router.delete('/remove', async function(req, res, next) {
   }
 });
 
+router.delete('/remove-all', async function(req, res, next) {
+  try {
+    res.json(await restaurants.removeAll());
+  } catch (err) {
+    console.error(`Error: `, err.message);
+    next(err);
+  }
+});
+
 module.exports = router;
