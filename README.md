@@ -29,3 +29,7 @@ POST: `https://ghostly-coffin-04418.herokuapp.com/compare`
 
 Result:
 `{ res_name: "Dominos" }`
+
+### UML
+
+![UML](./images/uml.png)
