@@ -5,6 +5,7 @@ const db = require('../database/db-connector')
 router.get('/', function (req, res) {
     db.connection.query('SELECT * FROM Restaurants;', function (error, results, fields) {
         res.send(JSON.stringify(results));
+        console.log('hello')
     })
 });
 
@@ -12,13 +13,13 @@ router.get('/', function (req, res) {
 // ADD MEMBER
 router.post('/add', function (req, res) {
     let data = req.body;
-    query1 = `INSERT INTO Members(member_name, member_email, member_address, member_phone_number) VALUES ('${data.member_name}','${data.member_email}','${data.member_address}','${data.member_phone_number}')`;
+    query1 = `INSERT INTO Restaurants(name) VALUES ('${data.name}'`;
     db.connection.query(query1, function (err, rows, fields) {
         if (err) {
             console.log(err)
             res.sendStatus(400);
         } else {
-            query2 = `SELECT * FROM Members;`;
+            query2 = `SELECT * FROM Restaurants;`;
             db.connection.query(query2, function (err, rows, fields) {
                 if (err) {
                     console.log(err);

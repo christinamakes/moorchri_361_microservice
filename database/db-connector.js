@@ -1,14 +1,16 @@
-// ./database/db-connector.js
+let sequelize;
 
-// Get an instance of mysql we can use in the app
-const mysql = require('mysql')
-
-const connection = mysql.createPool({
-    host: process.env.DBHOST,
-    user: process.env.DBUSER,
-    password: process.env.DBPASSWORD,
-    database: process.env.DBDATABASE
-  });
-
-// Export it for use in our applicaiton
-module.exports.connection = connection;
+if (process.env.JAWSDB_URL) {
+  sequelize = new Sequelize(process.env.JAWSDB_URL);
+} else {
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PW,
+    {
+      host: 'localhost',
+      dialect: 'mysql',
+      port: 3306,
+    },
+  );
+}
