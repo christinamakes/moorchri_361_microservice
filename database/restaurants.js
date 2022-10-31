@@ -5,7 +5,7 @@ const config = require('./config');
 async function getAllRestaurants(){
   const offset = helper.getOffset(config.listPerPage);
   const rows = await db.query(
-    `SELECT * FROM Restaurants`
+    `SELECT GROUP_CONCAT(res_name) as Restaurants FROM Restaurants`
   );
   const data = helper.emptyOrRows(rows);
 
@@ -19,7 +19,7 @@ async function create(restaurant){
         `INSERT INTO Restaurants(res_name) VALUES ("${restaurant.name}")`
       );
   
-    let message = 'Error in creating programming language';
+    let message = 'Error';
   
     if (result.affectedRows) {
       message = 'Created successfully';

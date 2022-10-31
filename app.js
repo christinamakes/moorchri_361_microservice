@@ -1,6 +1,6 @@
 // Database
 const db = require('./database/db')
-const members = require('./routes/member-router')
+const members = require('./routes/router')
 
 /*
     SETUP
