@@ -8,7 +8,7 @@ async function getAllRestaurants(){
     `SELECT GROUP_CONCAT(res_name ORDER BY res_name DESC) as Restaurants FROM Restaurants`
   );
   const data = helper.emptyOrRows(rows);
-    db.release()
+    db.close()
   return data[0]
 }
 
@@ -16,7 +16,7 @@ async function compare(restaurant){
     const rows = await db.query(
       `SELECT res_name FROM Restaurants WHERE res_name=("${restaurant.name}")`
     );
-    db.release()
+    db.close()
     return rows[0]
   }
 
@@ -30,7 +30,7 @@ async function create(restaurant){
     if (result.affectedRows) {
       message = 'Created successfully';
     }
-    db.release()
+    db.close()
     return {message};
   }
 
@@ -44,7 +44,7 @@ async function create(restaurant){
     if (result.affectedRows) {
       message = 'Deleted successfully';
     }
-    db.release()
+    db.close()
     return {message};
   }
 
@@ -58,7 +58,7 @@ async function create(restaurant){
     if (result.affectedRows) {
       message = 'Deleted successfully';
     }
-    db.release()
+    db.close()
     return {message};
   }
 
