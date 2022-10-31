@@ -1,83 +1,24 @@
-const express = require('express')
-const router = express.Router()
-const db = require('../database/db-connector')
+const express = require('express');
+const router = express.Router();
+const restaurants = require('../database/restaurants');
 
-router.get('/', function (req, res) {
-    db.connection.query('SELECT * FROM Restaurants;', function (error, results, fields) {
-        res.send(JSON.stringify(results));
-        console.log('hello')
-    })
+/* GET programming languages. */
+router.get('/', async function(req, res, next) {
+  try {
+    res.json(await restaurants.getAllRestaurants(req.query.page));
+  } catch (err) {
+    console.error(`Error: `, err.message);
+    next(err);
+  }
 });
 
+router.post('/add', async function(req, res, next) {
+    try {
+      res.json(await restaurants.create(req.body));
+    } catch (err) {
+      console.error(`Error: `, err.message);
+      next(err);
+    }
+  });
 
-// ADD MEMBER
-router.post('/add', function (req, res) {
-    let data = req.body;
-    query1 = `INSERT INTO Restaurants(name) VALUES ('${data.name}'`;
-    db.connection.query(query1, function (err, rows, fields) {
-        if (err) {
-            console.log(err)
-            res.sendStatus(400);
-        } else {
-            query2 = `SELECT * FROM Restaurants;`;
-            db.connection.query(query2, function (err, rows, fields) {
-                if (err) {
-                    console.log(err);
-                    res.sendStatus(400);
-                } else {
-                    res.send(JSON.stringify(rows));
-                }
-            })
-        }
-    })
-});
-
-// DELETE MEMBER
-router.delete('/delete/:id', function (req, res, next) {
-    const member_id = req.params.id;
-    const deleteMember = `DELETE FROM Members WHERE member_id = ?`;
-
-    db.connection.query(deleteMember, member_id, function (error, rows, fields) {
-        if (error) {
-            res.sendStatus(400);
-        } else {
-            query2 = `SELECT * FROM Members;`;
-            db.connection.query(query2, function (err, rows, fields) {
-                if (err) {
-                    console.log(err);
-                    res.sendStatus(400);
-                } else {
-                    res.send(JSON.stringify(rows));
-                }
-            })
-        }
-    })
-});
-
-// UPDATE MEMBER
-router.put('/update', function (req, res, next) {
-    const data = req.body;
-    const member_id = parseInt(req.body.member_id);
-    const name = req.body.member_name;
-    const address = req.body.member_address;
-    const email = req.body.member_email;
-    const phone_number = req.body.member_phone_number;
-    const queryUpdateMember = `UPDATE Members SET ? WHERE member_id = ?`;
-
-    db.connection.query(queryUpdateMember, [{
-        member_name: name,
-        member_address: address,
-        member_email: email,
-        member_phone_number: phone_number
-    }, member_id], function (error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            res.sendStatus(200);
-        }
-    })
-});
-
-
-module.exports = router
+module.exports = router;

@@ -1,5 +1,5 @@
 // Database
-const db = require('./database/db-connector')
+const db = require('./database/db')
 const members = require('./routes/member-router')
 
 /*
